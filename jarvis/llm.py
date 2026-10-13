@@ -53,17 +53,17 @@ class MockLLM(LLM):
     """Offline keyword router so the CLI is usable with no API key or model."""
 
     RULES = [
-        (re.compile(r"(?:calculate|compute|what is|what's)\s+([-\d\s.+*/()^%a-z]+?)\??$", re.I),
-         lambda m: ("calculator", {"expression": m.group(1).strip()})),
         (re.compile(r"weather (?:in|for|at) ([a-z .'-]+)", re.I), lambda m: ("weather", {"city": m.group(1).strip()})),
         (re.compile(r"remind me (?:to )?(.+?) in (.+)$", re.I),
          lambda m: ("add_reminder", {"text": m.group(1), "when": "in " + m.group(2)})),
-        (re.compile(r"(?:note|remember)(?: that)?:?\s+(.+)$", re.I), lambda m: ("add_note", {"text": m.group(1)})),
         (re.compile(r"(?:my|list|show) notes", re.I), lambda m: ("list_notes", {})),
         (re.compile(r"(?:my|list|show) reminders", re.I), lambda m: ("list_reminders", {})),
+        (re.compile(r"(?:note|remember)(?: that)?:?\s+(.+)$", re.I), lambda m: ("add_note", {"text": m.group(1)})),
         (re.compile(r"find (?:files? )?(?:named |called )?(.+)$", re.I), lambda m: ("file_search", {"query": m.group(1)})),
         (re.compile(r"system info|my (?:computer|system)", re.I), lambda m: ("system_info", {})),
         (re.compile(r"search (?:the web )?for (.+)$", re.I), lambda m: ("web_search", {"query": m.group(1)})),
+        (re.compile(r"(?:calculate|compute|what is|what's)\s+([-\d\s.+*/()^%a-z]+?)\??$", re.I),
+         lambda m: ("calculator", {"expression": m.group(1).strip()})),
     ]
 
     def chat(self, messages):
